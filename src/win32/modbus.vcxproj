@@ -21,8 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <ProjectGuid>{498E0845-C7F4-438B-8EDE-EF7FC9A74430}</ProjectGuid>
-    <RootNamespace>modbus</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>libmodbus</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -37,13 +38,13 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -77,27 +78,22 @@
     <OutDir>$(SolutionDir)build\bin\</OutDir>
     <IntDir>$(SolutionDir)build\obj\$(ProjectName)\</IntDir>
     <EnableManagedIncrementalBuild>False</EnableManagedIncrementalBuild>
-    <LinkIncremental />
+    <LinkIncremental>false</LinkIncremental>
     <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)build\bin\</OutDir>
     <IntDir>$(SolutionDir)build\obj\$(ProjectName)\</IntDir>
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)build\bin\</OutDir>
     <IntDir>$(SolutionDir)build\obj\$(ProjectName)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <PreBuildEvent>
-      <Command />
-    </PreBuildEvent>
-    <CustomBuildStep>
-      <Message />
-      <Command />
-    </CustomBuildStep>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -129,15 +125,14 @@
       <TargetMachine>MachineX86</TargetMachine>
       <ImportLibrary>$(SolutionDir)build\lib\$(TargetName).lib</ImportLibrary>
     </Link>
+    <PostBuildEvent>
+      <Command>robocopy .. $(SolutionDir)build\include\modbus *.h
+if %ErrorLevel% geq 8 exit %ErrorLevel%
+robocopy . $(SolutionDir)build\include\modbus *.h
+exit 0</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <PreBuildEvent>
-      <Command />
-    </PreBuildEvent>
-    <CustomBuildStep>
-      <Message />
-      <Command />
-    </CustomBuildStep>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -168,22 +163,22 @@
       <TargetMachine>MachineX86</TargetMachine>
       <ImportLibrary>$(SolutionDir)build\lib\$(TargetName).lib</ImportLibrary>
     </Link>
+    <PostBuildEvent>
+      <Command>robocopy .. $(SolutionDir)build\include\modbus *.h
+if %ErrorLevel% geq 8 exit %ErrorLevel%
+robocopy . $(SolutionDir)build\include\modbus *.h
+exit 0</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <PreBuildEvent>
-      <Command />
-    </PreBuildEvent>
-    <CustomBuildStep>
-      <Message />
-      <Command />
-    </CustomBuildStep>
     <Midl>
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src;..;.;D:/include/msvc_std;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>W32DEBUG;HAVE_CONFIG_H;DLLBUILD;_CRT_SECURE_NO_DEPRECATE=1;_CRT_NONSTDC_NO_DEPRECATE=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -200,16 +195,16 @@
       <StackCommitSize>524288</StackCommitSize>
       <TargetMachine>MachineX64</TargetMachine>
       <ImportLibrary>$(SolutionDir)build\lib\$(TargetName).lib</ImportLibrary>
+      <AdditionalDependencies>ws2_32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>robocopy .. $(SolutionDir)build\include\modbus *.h
+if %ErrorLevel% geq 8 exit %ErrorLevel%
+robocopy . $(SolutionDir)build\include\modbus *.h
+exit 0</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <PreBuildEvent>
-      <Command />
-    </PreBuildEvent>
-    <CustomBuildStep>
-      <Message />
-      <Command />
-    </CustomBuildStep>
     <Midl>
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
@@ -217,7 +212,8 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src;..;.;D:/include/msvc_std;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;DLLBUILD;_CRT_SECURE_NO_DEPRECATE=1;_CRT_NONSTDC_NO_DEPRECATE=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader />
@@ -236,7 +232,14 @@
       <LinkTimeCodeGeneration />
       <TargetMachine>MachineX64</TargetMachine>
       <ImportLibrary>$(SolutionDir)build\lib\$(TargetName).lib</ImportLibrary>
+      <AdditionalDependencies>ws2_32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>robocopy .. $(SolutionDir)build\include\modbus *.h
+if %ErrorLevel% geq 8 exit %ErrorLevel%
+robocopy . $(SolutionDir)build\include\modbus *.h
+exit 0</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\modbus-data.c" />
